@@ -113,11 +113,11 @@ public class Dao {
 	}
 	
 	
-	public User name(int id) {
+	public User getUserByEmail(String email) {
 		User u = new User();
 		try {
-			PreparedStatement pst = con.prepareStatement("select * from student where id = ?");
-			pst.setInt(1, id);
+			PreparedStatement pst = con.prepareStatement("select * from student where email = ?");
+			pst.setString(1, email);
 			ResultSet rs = pst.executeQuery();
 			
 			if(rs.next()) {
@@ -168,5 +168,33 @@ User u = new User();
 		
 		
 	}
+	
+	public User UserLogin(User u) {
+		User user = null;
+		
+		try {
+			PreparedStatement pst = con.prepareStatement("select * from student where email=? and password=?");
+			pst.setString(1, u.getEmail());
+			pst.setString(2,u.getPassword());
+			ResultSet rs = pst.executeQuery();
+			
+			if(rs.next()) {
+				user = new User();
+				user.setId(rs.getInt(1));
+				user.setFname(rs.getString(2));
+				user.setLname(rs.getString(3));
+				user.setEmail(rs.getString(4));
+				user.setMobile(rs.getString(5));
+				user.setAddress(rs.getString(6));
+				user.setGender(rs.getString(7));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return user;
+	
+}
 
 }

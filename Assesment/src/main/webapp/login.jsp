@@ -1,5 +1,5 @@
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"%>
 <html>
 <head>
 <title>Login Page</title>
@@ -18,8 +18,9 @@
 				<div class="card mt-5 shadow">
 					<div class="card-body">
 						<h3 class="text-center">Login</h3>
-						<form action="loginServlet" method="post">
+						<form action="login" method="post">
 							<div class="mb-3">
+							
 								<label class="form-label">Email</label> <input type="email"
 									name="email" class="form-control" placeholder="Enter Email"
 									required>
