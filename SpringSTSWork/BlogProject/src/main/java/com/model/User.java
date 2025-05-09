@@ -1,10 +1,12 @@
 package com.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -19,17 +21,12 @@ public class User {
 	private String email;
 	private String password;
 	
-	@OneToMany
-	@JoinColumn(name = "catid")
-	private int catid;
 	
-	@OneToMany
-	@JoinColumn(name = "cid")
-	private int cid;
+	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+	private List<Comments> comments;
 	
-	@OneToMany
-	@JoinColumn(name = "pid" )
-	private int pid;
+	@OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
+	private List<Post> posts;
 
 	public int getId() {
 		return id;
@@ -63,31 +60,25 @@ public class User {
 		this.password = password;
 	}
 
-	public int getCatid() {
-		return catid;
+	public List<Comments> getComments() {
+		return comments;
 	}
 
-	public void setCatid(int catid) {
-		this.catid = catid;
+	public void setComments(List<Comments> comments) {
+		this.comments = comments;
 	}
 
-	public int getCid() {
-		return cid;
+	public List<Post> getPosts() {
+		return posts;
 	}
 
-	public void setCid(int cid) {
-		this.cid = cid;
-	}
-
-	public int getPid() {
-		return pid;
-	}
-
-	public void setPid(int pid) {
-		this.pid = pid;
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 	
 	
+
 	
 
+	
 }
