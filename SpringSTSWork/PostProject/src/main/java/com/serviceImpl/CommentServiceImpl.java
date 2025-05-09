@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.Dto.CategoryDto;
 import com.Dto.CommentDto;
+import com.exceptionHandle.ResourceNotFoundException;
 import com.model.Comment;
 import com.model.Post;
 import com.model.User;
@@ -35,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto addComment(CommentDto commentDto, int uid, int pid) {
 		// TODO Auto-generated method stub
-		User user = userRepo.findById(uid).orElseThrow();
-		Post post = postRepo.findById(pid).orElseThrow();
+		User user = userRepo.findById(uid).orElseThrow(()-> new ResourceNotFoundException("User", "id", uid));
+		Post post = postRepo.findById(pid).orElseThrow(()-> new ResourceNotFoundException("User", "id", pid));
 		
 		Comment add = mapper.map(commentDto, Comment.class);
 		add.setPost(post);
@@ -57,9 +58,9 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto updateCommnet(CommentDto commentDto, int comid, int uid, int pid) {
 		// TODO Auto-generated method stub
-		Comment comment = commentRepo.findById(comid).orElseThrow();
-		User user = userRepo.findById(uid).orElseThrow();
-		Post post = postRepo.findById(pid).orElseThrow();
+		Comment comment = commentRepo.findById(comid).orElseThrow(()-> new ResourceNotFoundException("User", "id", comid));
+		User user = userRepo.findById(uid).orElseThrow(()-> new ResourceNotFoundException("User", "id", uid));
+		Post post = postRepo.findById(pid).orElseThrow(()-> new ResourceNotFoundException("User", "id", pid));
 		comment.setUser(user);
 		comment.setPost(post);
 		comment.setComment(commentDto.getComment());
@@ -70,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto commentById(int id) {
 		// TODO Auto-generated method stub
-		Comment comment = commentRepo.findById(id).orElseThrow();
+		Comment comment = commentRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 	
 		return mapper.map(comment, CommentDto.class);
 	}
@@ -78,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public List<CommentDto> commentByUser(int id) {
 		// TODO Auto-generated method stub
-		User user = userRepo.findById(id).orElseThrow();
+		User user = userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 		List<Comment> byUser = commentRepo.findByUser(user);
 		List<CommentDto> collect = byUser.stream().map(e->mapper.map(e, CommentDto.class)).collect(Collectors.toList());
 		return collect;
@@ -87,8 +88,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteCommentById(int id) {
 		// TODO Auto-generated method stub
-		Comment comment = commentRepo.findById(id).orElseThrow();
-		
+		Comment comment = commentRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 		commentRepo.delete(comment);
 		
 		

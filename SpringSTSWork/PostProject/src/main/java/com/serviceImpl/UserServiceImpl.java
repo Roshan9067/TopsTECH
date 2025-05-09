@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Dto.UserDto;
+import com.exceptionHandle.ResourceNotFoundException;
 import com.model.User;
 import com.repo.UserRepo;
 import com.service.UserService;
@@ -43,14 +44,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto userById(int id) {
 		// TODO Auto-generated method stub
-		User user = repo.findById(id).orElseThrow();
+		User user = repo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 		return mapper.map(user, UserDto.class);
 	}
 
 	@Override
 	public void deleteUserBy(int id) {
 		// TODO Auto-generated method stub
-		User user = repo.findById(id).orElseThrow();
+		User user = repo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 		repo.delete(user);
 	}
 
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(UserDto userDto, int id) {
 		// TODO Auto-generated method stub
-		User user = repo.findById(id).orElseThrow();
+		User user = repo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", "id", id));
 		user.setName(userDto.getName());
 		user.setPassword(userDto.getPassword());
 		User update = mapper.map(user, User.class);
